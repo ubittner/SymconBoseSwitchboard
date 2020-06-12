@@ -1,0 +1,28 @@
+{
+  "translations": {
+    "de": {
+      "This instance controls a Bose Switchboard Device.\nPlease refer to the documentation for further information.\n": "Diese Instanz steuert ein Bose Switchboard Gerät.\nWeitere Informationen entnehmen Sie bitte der Dokumentation.\n",
+      "Instance ID:\t\t": "Instanz ID:\t\t",
+      "Module:\t\t\t": "Modul:\t\t\t",
+      "Date:\t\t\t": "Datum:\t\t\t",
+      "Time:\t\t\t": "Uhrzeit:\t\t\t",
+      "Developer:\t\t": "Entwickler:\t\t",
+      "Note": "Notiz",
+      "Product ID": "Produkt ID",
+      "Product Name": "Produkt Name",
+      "Product Type": "Produkt Typ",
+      "Capabilities": "Merkmale",
+      "Can Audio Notify": "Audiobenachrichtigungen",
+      "Can Mute": "Stummschaltung",
+      "Has Presets": "Voreinstellungen (Presets)",
+      "Volume Max": "Lautstärke Max",
+      "Volume Min": "Lautstärke Min",
+      "Update Interval": "Aktualisierung",
+      "Bose Switchboard Device will be created": "Bose Switchboard Device wird erstellt",
+      "Bose Switchboard Device is active": "Bose Switchboard Device ist aktiv",
+      "Bose Switchboard Device will be deleted": "Bose Switchboard Device wird gelöscht",
+      "Bose Switchboard Device is inactive": "Bose Switchboard Device ist inaktiv",
+      "An error has occurred, for further information see messages or the log file": "Es ist Fehler aufgetreten, weitere Informationen unter Meldungen oder im Log"
+    }
+  }
+}

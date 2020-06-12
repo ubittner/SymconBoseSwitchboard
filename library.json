@@ -1,0 +1,12 @@
+{
+  "id": "{7101C0B6-7A8D-1FE2-A427-8DDCA26C3244}",
+  "name": "Bose Switchboard",
+  "author": "Ulrich Bittner",
+  "url": "https://github.com/ubittner/SymconBoseSwitchboard",
+  "compatibility": {
+    "version": "5.4"
+  },
+  "version": "1.00",
+  "build": 1,
+  "date": 1591951834
+}

@@ -1,0 +1,20 @@
+{
+  "translations": {
+    "de": {
+      "This instance connects to the Bose Switchboard Cloud API.\nPlease refer to the documentation for further information.\n": "Diese Instanz stellt eine Verbindung mit der Bose Switchboard Cloud API her.\nWeitere Informationen entnehmen Sie bitte der Dokumentation.\n",
+      "Instance ID:\t\t": "Instanz ID:\t\t",
+      "Module:\t\t\t": "Modul:\t\t\t",
+      "Date:\t\t\t": "Datum:\t\t\t",
+      "Time:\t\t\t": "Uhrzeit:\t\t\t",
+      "Developer:\t\t": "Entwickler:\t\t",
+      "Note": "Notiz",
+      "Register": "Registrieren",
+      "Bose Switchboard Splitter will be created": "Bose Switchboard Splitter wird erstellt",
+      "Bose Switchboard Splitter is active": "Bose Switchboard Splitter ist aktiv",
+      "Bose Switchboard Splitter will be deleted": "Bose Switchboard Splitter wird gelöscht",
+      "Bose Switchboard Splitter is inactive": "Bose Switchboard Splitter ist inaktiv",
+      "No token found, please register for a token first!": "Kein Token gefunden, bitte registrieren Sie sich zunächst für einen Token!",
+      "An error has occurred, for further information see messages or the log file": "Es ist Fehler aufgetreten, weitere Informationen unter Meldungen oder im Log"
+    }
+  }
+}

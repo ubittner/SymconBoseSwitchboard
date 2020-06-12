@@ -1,0 +1,18 @@
+{
+  "id": "{C7419D17-AFAB-7ADB-0734-8F39D9E5ADE1}",
+  "name": "Bose Switchboard Discovery",
+  "type": 5,
+  "vendor": "Bose",
+  "aliases": [
+    "Bose Switchboard Discovery"
+  ],
+  "parentRequirements": [
+    "{DEEE3A70-369D-3E7E-5C9B-2B35FC93A09B}"
+  ],
+  "childRequirements": [],
+  "implemented": [
+    "{07CD0C42-2564-EA38-2ECF-C874F2190788}"
+  ],
+  "prefix": "BSBD",
+  "url": "https://github.com/ubittner/SymconBoseSwitchboard/Discovery"
+}

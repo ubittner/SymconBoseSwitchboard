@@ -1,0 +1,18 @@
+{
+  "id": "{B6558215-A729-3DCC-909F-DC00A0E2A734}",
+  "name": "Bose Switchboard Splitter",
+  "type": 2,
+  "vendor": "Bose",
+  "aliases": [
+    "Bose Switchboard Splitter"
+  ],
+  "parentRequirements": [],
+  "childRequirements": [
+    "{07CD0C42-2564-EA38-2ECF-C874F2190788}"
+  ],
+  "implemented": [
+    "{DEEE3A70-369D-3E7E-5C9B-2B35FC93A09B}"
+  ],
+  "prefix": "BSBS",
+  "url": "https://github.com/ubittner/SymconBoseSwitchboard/Splitter"
+}
