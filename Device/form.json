@@ -106,8 +106,7 @@
           "type": "NumberSpinner",
           "name": "UpdateInterval",
           "caption": "Update Interval",
-          "suffix": "s",
-          "minimum": 10
+          "suffix": "s"
         }
       ]
     }

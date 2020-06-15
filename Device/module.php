@@ -229,7 +229,11 @@ class BoseSwitchboardDevice extends IPSModule
 
     private function SetUpdateTimerInterval()
     {
-        $milliseconds = $this->ReadPropertyInteger('UpdateInterval') * 1000;
-        $this->SetTimerInterval('UpdateState', $milliseconds);
+        $seconds = $this->ReadPropertyInteger('UpdateInterval');
+        if ($seconds > 0 && $seconds < 10) {
+            // Minimum update interval is 10 seconds
+            $seconds = 10;
+        }
+        $this->SetTimerInterval('UpdateState', $seconds * 1000);
     }
 }
