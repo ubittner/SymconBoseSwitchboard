@@ -67,12 +67,12 @@
         {
           "name": "IP",
           "caption": "IP Address",
-          "width": "350px"
+          "width": "200px"
         },
         {
           "name": "ProductName",
           "caption": "Product Name",
-          "width": "350px"
+          "width": "300px"
         },
         {
           "name": "ProductType",

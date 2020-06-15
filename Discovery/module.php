@@ -140,20 +140,31 @@ class BoseSwitchboardDiscovery extends IPSModule
         $this->SendDebug(__FUNCTION__, print_r($devices, true), 0);
         $existingDevices = [];
         if (!empty($devices)) {
-            foreach ($devices as $key => $device) {
+            foreach ($devices as $device) {
                 $data = [];
-                $deviceInfo = ZC_QueryService($ids[0], $device['Name'], '_bose-passport._tcp.', 'local.');
-                $this->SendDebug(__FUNCTION__, print_r($deviceInfo, true), 0);
-                if (!empty($deviceInfo)) {
-                    if (empty($deviceInfo[0]['IPv4'])) {
-                        $data['ip'] = $deviceInfo[0]['IPv6'][0];
-                    } else {
-                        $data['ip'] = $deviceInfo[0]['IPv4'][0];
+                $deviceInfos = ZC_QueryService($ids[0], $device['Name'], '_bose-passport._tcp.', 'local.');
+                $this->SendDebug(__FUNCTION__, print_r($deviceInfos, true), 0);
+                if (!empty($deviceInfos)) {
+                    foreach ($deviceInfos as $info) {
+                        if (empty($info['IPv4'])) {
+                            $data['ip'] = $info['IPv6'][0];
+                        } else {
+                            $data['ip'] = $info['IPv4'][0];
+                        }
+                        $data['productName'] = (string) str_replace('._bose-passport._tcp.local', '', $info['Name']);
+                        if (array_key_exists('TXTRecords', $info)) {
+                            $txtRecords = $info['TXTRecords'];
+                            foreach ($txtRecords as $record) {
+                                if (strpos($record, 'PNAME=') !== false) {
+                                    $data['productType'] = (string) str_replace('PNAME=', '', $record);
+                                }
+                                if (strpos($record, 'GUID=') !== false) {
+                                    $data['productID'] = (string) str_replace('GUID=', '', $record);
+                                }
+                            }
+                        }
+                        array_push($existingDevices, $data);
                     }
-                    $data['productName'] = (string) str_replace('._bose-passport._tcp.local', '', $deviceInfo[0]['Name']);
-                    $data['productType'] = (string) str_replace('PNAME=', '', $deviceInfo[0]['TXTRecords'][2]);
-                    $data['productID'] = (string) str_replace('GUID=', '', $deviceInfo[0]['TXTRecords'][5]);
-                    array_push($existingDevices, $data);
                 }
             }
         }
