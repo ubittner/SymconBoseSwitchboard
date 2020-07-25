@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection ALL */
+/** @noinspection PhpUnused */
 
 declare(strict_types=1);
 

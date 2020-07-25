@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection DuplicatedCode */
+/** @noinspection DuplicatedCode */
 
 /*
  * @module      Bose Switchboard Configurator

@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection DuplicatedCode */
+/** @noinspection PhpUndefinedFunctionInspection */
 
 /*
  * @module      Bose Switchboard Discovery

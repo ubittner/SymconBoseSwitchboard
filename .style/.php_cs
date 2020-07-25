@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpUndefinedNamespaceInspection */
+/** @noinspection PhpUndefinedClassInspection */
 
 declare(strict_types=1);
 
@@ -42,7 +43,7 @@ return PhpCsFixer\Config::create()
         //date_time_immutable
         'declare_strict_types'    => true,
         'declare_equal_normalize' => true,
-        'declare_strict_types'    => true,
+        //'declare_strict_types'    => true,
         //dir_constant
         'elseif'   => true,
         'encoding' => true,
