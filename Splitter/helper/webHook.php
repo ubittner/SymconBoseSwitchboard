@@ -5,6 +5,26 @@ declare(strict_types=1);
 trait BSBS_webHook
 {
     /**
+     * Used for the API Event Callback URL.
+     */
+    protected function ProcessHookData()
+    {
+        $this->SendDebug(__FUNCTION__ . ' Incoming Data: ', print_r($_SERVER, true), 0);
+        // Get content
+        $data = file_get_contents('php://input');
+        $this->SendDebug(__FUNCTION__ . ' Data: ', $data, 0);
+        // Send data to children
+        $forwardData = [];
+        $forwardData['DataID'] = CORE_WEBHOOK_DATA_GUID;
+        $forwardData['Buffer'] = json_decode($data);
+        $forwardData = json_encode($forwardData);
+        $this->SendDebug(__FUNCTION__ . ' Forward Data: ', $forwardData, 0);
+        // Prepared, but not used at the moment!
+        // $this->SendDataToChildren($forwardData);
+        $this->SendDebug(__FUNCTION__ . ' SendDataToChildren is not used at the moment!', $forwardData, 0);
+    }
+
+    /**
      * Registers a WebHook for:
      * Asynchronous event generated in response to a previous request.
      * This response is sent only to the client that created the original request.
@@ -58,25 +78,5 @@ trait BSBS_webHook
                 $this->SendDebug(__FUNCTION__, 'WebHook was successfully unregistered', 0);
             }
         }
-    }
-
-    /**
-     * Used for the API Event Callback URL.
-     */
-    protected function ProcessHookData()
-    {
-        $this->SendDebug(__FUNCTION__ . ' Incoming Data: ', print_r($_SERVER, true), 0);
-        // Get content
-        $data = file_get_contents('php://input');
-        $this->SendDebug(__FUNCTION__ . ' Data: ', $data, 0);
-        // Send data to children
-        $forwardData = [];
-        $forwardData['DataID'] = CORE_WEBHOOK_DATA_GUID;
-        $forwardData['Buffer'] = json_decode($data);
-        $forwardData = json_encode($forwardData);
-        $this->SendDebug(__FUNCTION__ . ' Forward Data: ', $forwardData, 0);
-        // Prepared, but not used at the moment!
-        // $this->SendDataToChildren($forwardData);
-        $this->SendDebug(__FUNCTION__ . ' SendDataToChildren is not used at the moment!', $forwardData, 0);
     }
 }

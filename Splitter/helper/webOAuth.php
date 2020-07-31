@@ -4,8 +4,42 @@ declare(strict_types=1);
 
 trait BSBS_webOAuth
 {
-    private $oauthServer = 'oauth.ipmagic.de';
     private $oauthIdentifer = 'bose_switchboard';
+    private $oauthServer = 'oauth.ipmagic.de';
+
+    /**
+     * This function will be called by the register button on the property page!
+     */
+    public function Register()
+    {
+        // Return everything which will open the browser
+        return 'https://' . $this->oauthServer . '/authorize/' . $this->oauthIdentifer . '?username=' . urlencode(IPS_GetLicensee());
+    }
+
+    public function RequestStatus()
+    {
+        echo $this->FetchData('https://' . $this->oauthServer . '/forward');
+    }
+
+    /**
+     * This function will be called by the OAuth control. Visibility should be protected!
+     */
+    protected function ProcessOAuthData()
+    {
+        // Lets assume requests via GET are for code exchange. This might not fit your needs!
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (!isset($_GET['code'])) {
+                die('Authorization Code expected');
+            }
+            $token = $this->FetchRefreshToken($_GET['code']);
+            $this->SendDebug(__FUNCTION__, "OK! Let's save the Refresh Token permanently", 0);
+            IPS_SetProperty($this->InstanceID, 'Token', $token);
+            IPS_ApplyChanges($this->InstanceID);
+        } else {
+            // Just print raw post data!
+            echo file_get_contents('php://input');
+        }
+    }
 
     private function RegisterWebOAuth($WebOAuth)
     {
@@ -57,15 +91,6 @@ trait BSBS_webOAuth
         }
     }
 
-    /**
-     * This function will be called by the register button on the property page!
-     */
-    public function Register()
-    {
-        // Return everything which will open the browser
-        return 'https://' . $this->oauthServer . '/authorize/' . $this->oauthIdentifer . '?username=' . urlencode(IPS_GetLicensee());
-    }
-
     private function FetchRefreshToken($Code)
     {
         $this->SendDebug(__FUNCTION__, 'Use Authentication Code to get our precious Refresh Token!', 0);
@@ -87,26 +112,6 @@ trait BSBS_webOAuth
         $this->FetchAccessToken($data->access_token, time() + $data->expires_in);
         // Return Refresh Token
         return $data->refresh_token;
-    }
-
-    /**
-     * This function will be called by the OAuth control. Visibility should be protected!
-     */
-    protected function ProcessOAuthData()
-    {
-        // Lets assume requests via GET are for code exchange. This might not fit your needs!
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            if (!isset($_GET['code'])) {
-                die('Authorization Code expected');
-            }
-            $token = $this->FetchRefreshToken($_GET['code']);
-            $this->SendDebug(__FUNCTION__, "OK! Let's save the Refresh Token permanently", 0);
-            IPS_SetProperty($this->InstanceID, 'Token', $token);
-            IPS_ApplyChanges($this->InstanceID);
-        } else {
-            // Just print raw post data!
-            echo file_get_contents('php://input');
-        }
     }
 
     private function FetchAccessToken($Token = '', $Expires = 0)
@@ -171,10 +176,5 @@ trait BSBS_webOAuth
             return false;
         }
         return $result;
-    }
-
-    public function RequestStatus()
-    {
-        echo $this->FetchData('https://' . $this->oauthServer . '/forward');
     }
 }

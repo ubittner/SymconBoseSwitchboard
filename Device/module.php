@@ -29,11 +29,11 @@ include_once __DIR__ . '/helper/autoload.php';
 
 class BoseSwitchboardDevice extends IPSModule
 {
-    // Constants
-    private const DELAY_MILLISECONDS = 250;
-
     // Helper
     use BSBD_control;
+
+    // Constants
+    private const DELAY_MILLISECONDS = 250;
 
     public function Create()
     {
