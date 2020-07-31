@@ -65,7 +65,7 @@ trait BSBS_webHook
      */
     protected function ProcessHookData()
     {
-        $this->SendDebug(__FUNCTION__ . ' Incomming Data: ', print_r($_SERVER, true), 0);
+        $this->SendDebug(__FUNCTION__ . ' Incoming Data: ', print_r($_SERVER, true), 0);
         // Get content
         $data = file_get_contents('php://input');
         $this->SendDebug(__FUNCTION__ . ' Data: ', $data, 0);
