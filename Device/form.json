@@ -39,7 +39,8 @@
         {
           "type": "ValidationTextBox",
           "name": "Note",
-          "caption": "Note"
+          "caption": "Note",
+          "width": "600px"
         },
         {
           "type": "Label",

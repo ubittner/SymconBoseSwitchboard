@@ -43,7 +43,8 @@
         {
           "type": "ValidationTextBox",
           "name": "Note",
-          "caption": "Note"
+          "caption": "Note",
+          "width": "600px"
         },
         {
           "type": "Label",
@@ -59,7 +60,8 @@
         {
           "name": "Token",
           "caption": "Token",
-          "type": "ValidationTextBox"
+          "type": "ValidationTextBox",
+          "width": "600px"
         }
       ]
     }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 trait BSBS_switchboardAPI
 {
-    private string $apiVersion = '0.9';
-    private string $apiKey = 'GAHFdNpCqXbXR005ZLT4Cgb0iUSG4aXA';
+    private $apiVersion = '0.9';
+    private $apiKey = 'GAHFdNpCqXbXR005ZLT4Cgb0iUSG4aXA';
 
     /**
      * Lists the Bose products available to the current user.

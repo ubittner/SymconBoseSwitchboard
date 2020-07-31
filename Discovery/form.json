@@ -39,7 +39,8 @@
         {
           "type": "ValidationTextBox",
           "name": "Note",
-          "caption": "Note"
+          "caption": "Note",
+          "width": "600px"
         }
       ]
     },
@@ -50,7 +51,8 @@
     {
       "type": "SelectCategory",
       "name": "CategoryID",
-      "caption": "Category"
+      "caption": "Category",
+      "width": "600px"
     }
   ],
   "actions": [

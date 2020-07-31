@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 trait BSBS_webOAuth
 {
-    private string $oauthServer = 'oauth.ipmagic.de';
-    private string $oauthIdentifer = 'bose_switchboard';
+    private $oauthServer = 'oauth.ipmagic.de';
+    private $oauthIdentifer = 'bose_switchboard';
 
     private function RegisterWebOAuth($WebOAuth)
     {

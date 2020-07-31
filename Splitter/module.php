@@ -1,4 +1,4 @@
-<?php /** @noinspection DuplicatedCode */
+<?php
 
 /*
  * @module      Bose Switchboard Splitter
@@ -30,7 +30,6 @@ include_once __DIR__ . '/helper/autoload.php';
 class BoseSwitchboardSplitter extends IPSModule
 {
     // Helper
-    use libs_helper_getModuleInfo;
     use BSBS_switchboardAPI;
     use BSBS_webHook;
     use BSBS_webOAuth;
@@ -93,7 +92,14 @@ class BoseSwitchboardSplitter extends IPSModule
     public function GetConfigurationForm()
     {
         $formData = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
-        $moduleInfo = $this->GetModuleInfo(BOSE_SWITCHBOARD_SPLITTER_GUID);
+        $moduleInfo = [];
+        $library = IPS_GetLibrary(BOSE_SWITCHBOARD_LIBRARY_GUID);
+        $module = IPS_GetModule(BOSE_SWITCHBOARD_SPLITTER_GUID);
+        $moduleInfo['name'] = $module['ModuleName'];
+        $moduleInfo['version'] = $library['Version'] . '-' . $library['Build'];
+        $moduleInfo['date'] = date('d.m.Y', $library['Date']);
+        $moduleInfo['time'] = date('H:i', $library['Date']);
+        $moduleInfo['developer'] = $library['Author'];
         $formData['elements'][1]['items'][1]['caption'] = $this->Translate("Instance ID:\t\t") . $this->InstanceID;
         $formData['elements'][1]['items'][2]['caption'] = $this->Translate("Module:\t\t\t") . $moduleInfo['name'];
         $formData['elements'][1]['items'][3]['caption'] = "Version:\t\t\t" . $moduleInfo['version'];

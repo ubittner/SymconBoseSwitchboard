@@ -1,4 +1,4 @@
-<?php /** @noinspection DuplicatedCode */
+<?php
 
 /*
  * @module      Bose Switchboard Device
@@ -33,7 +33,6 @@ class BoseSwitchboardDevice extends IPSModule
     private const DELAY_MILLISECONDS = 250;
 
     // Helper
-    use libs_helper_getModuleInfo;
     use BSBD_control;
 
     public function Create()
@@ -53,7 +52,6 @@ class BoseSwitchboardDevice extends IPSModule
     {
         // Never delete this line!
         parent::Destroy();
-        // Delete profiles
         $this->DeleteProfiles();
     }
 
@@ -90,7 +88,14 @@ class BoseSwitchboardDevice extends IPSModule
     public function GetConfigurationForm()
     {
         $formData = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
-        $moduleInfo = $this->GetModuleInfo(BOSE_SWITCHBOARD_DEVICE_GUID);
+        $moduleInfo = [];
+        $library = IPS_GetLibrary(BOSE_SWITCHBOARD_LIBRARY_GUID);
+        $module = IPS_GetModule(BOSE_SWITCHBOARD_DEVICE_GUID);
+        $moduleInfo['name'] = $module['ModuleName'];
+        $moduleInfo['version'] = $library['Version'] . '-' . $library['Build'];
+        $moduleInfo['date'] = date('d.m.Y', $library['Date']);
+        $moduleInfo['time'] = date('H:i', $library['Date']);
+        $moduleInfo['developer'] = $library['Author'];
         $formData['elements'][1]['items'][1]['caption'] = $this->Translate("Instance ID:\t\t") . $this->InstanceID;
         $formData['elements'][1]['items'][2]['caption'] = $this->Translate("Module:\t\t\t") . $moduleInfo['name'];
         $formData['elements'][1]['items'][3]['caption'] = "Version:\t\t\t" . $moduleInfo['version'];
