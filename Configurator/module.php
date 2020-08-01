@@ -1,5 +1,8 @@
 <?php
 
+/** @noinspection PhpUnused */
+/** @noinspection DuplicatedCode */
+
 /*
  * @module      Bose Switchboard Configurator
  *

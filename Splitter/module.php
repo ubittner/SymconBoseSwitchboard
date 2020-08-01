@@ -1,5 +1,8 @@
 <?php
 
+/** @noinspection PhpUnused */
+/** @noinspection DuplicatedCode */
+
 /*
  * @module      Bose Switchboard Splitter
  *
@@ -48,11 +51,11 @@ class BoseSwitchboardSplitter extends IPSModule
     {
         // Unregister WebHook
         if (!IPS_InstanceExists($this->InstanceID)) {
-            $this->UnregisterWebhook('/hook/' . $this->oauthIdentifer);
+            $this->UnregisterWebhook('/hook/' . $this->oauthIdentifier);
         }
         // Unregister WebOAuth
         if (!IPS_InstanceExists($this->InstanceID)) {
-            $this->UnregisterWebOAuth($this->oauthIdentifer);
+            $this->UnregisterWebOAuth($this->oauthIdentifier);
         }
         // Never delete this line!
         parent::Destroy();
@@ -68,8 +71,8 @@ class BoseSwitchboardSplitter extends IPSModule
         if (IPS_GetKernelRunlevel() != KR_READY) {
             return;
         }
-        $this->RegisterWebHook('/hook/' . $this->oauthIdentifer);
-        $this->RegisterWebOAuth($this->oauthIdentifer);
+        $this->RegisterWebHook('/hook/' . $this->oauthIdentifier);
+        $this->RegisterWebOAuth($this->oauthIdentifier);
         $this->ValidateConfiguration();
     }
 

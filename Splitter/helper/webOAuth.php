@@ -1,10 +1,13 @@
 <?php
 
+/** @noinspection PhpUnused */
+/** @noinspection DuplicatedCode */
+
 declare(strict_types=1);
 
 trait BSBS_webOAuth
 {
-    private $oauthIdentifer = 'bose_switchboard';
+    private $oauthIdentifier = 'bose_switchboard';
     private $oauthServer = 'oauth.ipmagic.de';
 
     /**
@@ -13,7 +16,7 @@ trait BSBS_webOAuth
     public function Register()
     {
         // Return everything which will open the browser
-        return 'https://' . $this->oauthServer . '/authorize/' . $this->oauthIdentifer . '?username=' . urlencode(IPS_GetLicensee());
+        return 'https://' . $this->oauthServer . '/authorize/' . $this->oauthIdentifier . '?username=' . urlencode(IPS_GetLicensee());
     }
 
     public function RequestStatus()
@@ -103,7 +106,7 @@ trait BSBS_webOAuth
             ]
         ];
         $context = stream_context_create($options);
-        $result = file_get_contents('https://' . $this->oauthServer . '/access_token/' . $this->oauthIdentifer, false, $context);
+        $result = file_get_contents('https://' . $this->oauthServer . '/access_token/' . $this->oauthIdentifier, false, $context);
         $data = json_decode($result);
         if (!isset($data->token_type) || $data->token_type != 'Bearer') {
             die('Bearer Token expected');
@@ -137,7 +140,7 @@ trait BSBS_webOAuth
                 ]
             ];
             $context = stream_context_create($options);
-            $result = file_get_contents('https://' . $this->oauthServer . '/access_token/' . $this->oauthIdentifer, false, $context);
+            $result = file_get_contents('https://' . $this->oauthServer . '/access_token/' . $this->oauthIdentifier, false, $context);
             $data = json_decode($result);
             if (!isset($data->token_type) || $data->token_type != 'Bearer') {
                 die('Bearer Token expected');

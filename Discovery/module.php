@@ -1,5 +1,8 @@
 <?php
 
+/** @noinspection PhpUnused */
+/** @noinspection DuplicatedCode */
+
 /*
  * @module      Bose Switchboard Discovery
  *
@@ -137,6 +140,7 @@ class BoseSwitchboardDiscovery extends IPSModule
         return array_reverse($path);
     }
 
+    /** @noinspection PhpUndefinedFunctionInspection */
     private function DiscoverDevices()
     {
         $ids = IPS_GetInstanceListByModuleID(CORE_DNS_SD_GUID);

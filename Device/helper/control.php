@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection DuplicatedCode */
+
 declare(strict_types=1);
 
 trait BSBD_control

@@ -153,7 +153,7 @@ trait BSBS_switchboardAPI
      *
      * @param string $ProductID
      * @param int $PresetID
-     * Identifer for a product preset. A preset identifier is an integer between 1 and 6, inclusive.
+     * Identifier for a product preset. A preset identifier is an integer between 1 and 6, inclusive.
      *
      * @return false|string
      */
