@@ -3,13 +3,15 @@
     "de": {
       "Active": "Aktiv",
       "Register": "Registrieren",
-      "Validity": "Gültigkeit",
+      "Expert Settings": "Experteneinstellungen",
+      "Update Refresh Token": "Refresh Token aktualisieren",
       "Bose Switchboard Splitter will be created": "Bose Switchboard Splitter wird erstellt",
       "Bose Switchboard Splitter is active": "Bose Switchboard Splitter ist aktiv",
       "Bose Switchboard Splitter will be deleted": "Bose Switchboard Splitter wird gelöscht",
       "Bose Switchboard Splitter is inactive": "Bose Switchboard Splitter ist inaktiv",
       "No token found, please register for a token first!": "Kein Token gefunden, bitte registrieren Sie sich zunächst für einen Token!",
-      "An error has occurred, for further information see messages or the log file": "Es ist Fehler aufgetreten, weitere Informationen unter Meldungen oder im Log"
+      "An error has occurred, for further information see messages or the log file": "Es ist Fehler aufgetreten, weitere Informationen unter Meldungen oder im Log",
+      "Please enter your Refresh Token!": "Bitte geben Sie Ihren Refresh Token an!"
     }
   }
 }

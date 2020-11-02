@@ -24,9 +24,31 @@
   ],
   "actions": [
     {
-      "type": "Button",
-      "caption": "Log Tokens",
-      "onClick": "echo BOSESB_LogTokens($id);"
+      "type": "ExpansionPanel",
+      "caption": "Expert Settings",
+      "items": [
+        {
+          "name": "NewRefreshToken",
+          "caption": "Refresh Token",
+          "type": "ValidationTextBox",
+          "width": "600px",
+          "multiline": true
+        },
+        {
+          "type": "Button",
+          "caption": "Update Refresh Token",
+          "onClick": "echo BOSESB_UpdateRefreshToken($id, $NewRefreshToken);"
+        },
+        {
+          "type": "Label",
+          "caption": " "
+        },
+        {
+          "type": "Button",
+          "caption": "Log Tokens",
+          "onClick": "echo BOSESB_LogTokens($id);"
+        }
+      ]
     }
   ],
   "status": [

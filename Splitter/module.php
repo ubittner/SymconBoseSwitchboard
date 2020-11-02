@@ -168,6 +168,7 @@ class BoseSwitchboardSplitter extends IPSModule
 
     public function LogTokens(): void
     {
+        $this->SendDebug(__FUNCTION__, 'Method executed (' . microtime(true) . ')', 0);
         //Refresh token
         $refreshToken = $this->ReadPropertyString('RefreshToken');
         if (!empty($refreshToken)) {
@@ -185,6 +186,17 @@ class BoseSwitchboardSplitter extends IPSModule
             }
         } else {
             $this->LogMessage('No access token found!', KL_NOTIFY);
+        }
+    }
+
+    public function UpdateRefreshToken(string $NewRefreshToken): void
+    {
+        $this->SendDebug(__FUNCTION__, 'Method executed (' . microtime(true) . ')', 0);
+        if (empty($NewRefreshToken)) {
+            echo $this->Translate('Please enter your Refresh Token!');
+        } else {
+            IPS_SetProperty($this->InstanceID, 'RefreshToken', $NewRefreshToken);
+            IPS_ApplyChanges($this->InstanceID);
         }
     }
 
