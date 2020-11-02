@@ -6,7 +6,7 @@
 /*
  * @module      Bose Switchboard Configurator
  *
- * @prefix      BSBC
+ * @prefix      BOSESB
  *
  * @file        module.php
  *
@@ -15,7 +15,7 @@
  * @license     CC BY-NC-SA 4.0
  *              https://creativecommons.org/licenses/by-nc-sa/4.0/
  *
- * @see         https://github.com/ubittner/SymconBoseSwitchboard/Configurator
+ * @see         https://github.com/ubittner/SymconBoseSwitchboard/
  *
  * @guids       Library
  *              {7101C0B6-7A8D-1FE2-A427-8DDCA26C3244}
@@ -26,34 +26,33 @@
 
 declare(strict_types=1);
 
-include_once __DIR__ . '/../libs/helper/autoload.php';
+include_once __DIR__ . '/../libs/constants.php';
 
 class BoseSwitchboardConfigurator extends IPSModule
 {
     public function Create()
     {
-        // Never delete this line!
+        //Never delete this line!
         parent::Create();
-        // Properties
-        $this->RegisterPropertyString('Note', '');
+        //Register property
         $this->RegisterPropertyInteger('CategoryID', 0);
-        // Connect to parent (Splitter)
+        //Connect to splitter
         $this->ConnectParent(BOSE_SWITCHBOARD_SPLITTER_GUID);
     }
 
     public function Destroy()
     {
-        // Never delete this line!
+        //Never delete this line!
         parent::Destroy();
     }
 
     public function ApplyChanges()
     {
-        // Wait until IP-Symcon is started
+        //Wait until IP-Symcon is started
         $this->RegisterMessage(0, IPS_KERNELSTARTED);
-        // Never delete this line!
+        //Never delete this line!
         parent::ApplyChanges();
-        // Check runlevel
+        //Check runlevel
         if (IPS_GetKernelRunlevel() != KR_READY) {
             return;
         }
@@ -61,12 +60,7 @@ class BoseSwitchboardConfigurator extends IPSModule
 
     public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     {
-        $this->SendDebug(__FUNCTION__, $TimeStamp . ', SenderID: ' . $SenderID . ', Message: ' . $Message . ', Data: ' . print_r($Data, true), 0);
-        if (!empty($Data)) {
-            foreach ($Data as $key => $value) {
-                $this->SendDebug(__FUNCTION__, 'Data[' . $key . '] = ' . json_encode($value), 0);
-            }
-        }
+        $this->SendDebug('MessageSink', 'SenderID: ' . $SenderID . ', Message: ' . $Message, 0);
         switch ($Message) {
             case IPS_KERNELSTARTED:
                 $this->KernelReady();
@@ -78,20 +72,6 @@ class BoseSwitchboardConfigurator extends IPSModule
     public function GetConfigurationForm()
     {
         $formData = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
-        $moduleInfo = [];
-        $library = IPS_GetLibrary(BOSE_SWITCHBOARD_LIBRARY_GUID);
-        $module = IPS_GetModule(BOSE_SWITCHBOARD_CONFIGURATOR_GUID);
-        $moduleInfo['name'] = $module['ModuleName'];
-        $moduleInfo['version'] = $library['Version'] . '-' . $library['Build'];
-        $moduleInfo['date'] = date('d.m.Y', $library['Date']);
-        $moduleInfo['time'] = date('H:i', $library['Date']);
-        $moduleInfo['developer'] = $library['Author'];
-        $formData['elements'][1]['items'][1]['caption'] = $this->Translate("Instance ID:\t\t") . $this->InstanceID;
-        $formData['elements'][1]['items'][2]['caption'] = $this->Translate("Module:\t\t\t") . $moduleInfo['name'];
-        $formData['elements'][1]['items'][3]['caption'] = "Version:\t\t\t" . $moduleInfo['version'];
-        $formData['elements'][1]['items'][4]['caption'] = $this->Translate("Date:\t\t\t") . $moduleInfo['date'];
-        $formData['elements'][1]['items'][5]['caption'] = $this->Translate("Time:\t\t\t") . $moduleInfo['time'];
-        $formData['elements'][1]['items'][6]['caption'] = $this->Translate("Developer:\t\t") . $moduleInfo['developer'];
         $values = [];
         $existingDevices = $this->GetExistingDevices();
         if (!empty($existingDevices)) {
@@ -104,7 +84,7 @@ class BoseSwitchboardConfigurator extends IPSModule
                     foreach ($existingDevices as $key => $device) {
                         if (array_key_exists('productType', $device)) {
                             $productID = $device['productID'];
-                            $instanceID = $this->GetDeviceInstances($productID);
+                            $instanceID = $this->GetDeviceInstanceID($productID);
                             $values[] = [
                                 'ProductID'        => $productID,
                                 'ProductName'      => $device['productName'],
@@ -113,6 +93,7 @@ class BoseSwitchboardConfigurator extends IPSModule
                                 'instanceID'       => $instanceID,
                                 'create'           => [
                                     'moduleID'      => BOSE_SWITCHBOARD_DEVICE_GUID,
+                                    'name'          => $device['productName'],
                                     'configuration' => [
                                         'ProductID'   => (string) $productID,
                                         'ProductName' => (string) $device['productName'],
@@ -130,14 +111,14 @@ class BoseSwitchboardConfigurator extends IPSModule
         return json_encode($formData);
     }
 
-    //################### Private
+    ################### Private
 
-    private function KernelReady()
+    private function KernelReady(): void
     {
         $this->ApplyChanges();
     }
 
-    private function GetCategoryPath(int $CategoryID)
+    private function GetCategoryPath(int $CategoryID): array
     {
         if ($CategoryID === 0) {
             return [];
@@ -151,7 +132,7 @@ class BoseSwitchboardConfigurator extends IPSModule
         return array_reverse($path);
     }
 
-    private function GetExistingDevices()
+    private function GetExistingDevices(): string
     {
         if (!$this->HasActiveParent()) {
             return '';
@@ -166,7 +147,7 @@ class BoseSwitchboardConfigurator extends IPSModule
         return $this->SendDataToParent($data);
     }
 
-    private function GetDeviceInstances($DeviceUID)
+    private function GetDeviceInstanceID($DeviceUID): int
     {
         $instanceID = 0;
         $instanceIDs = IPS_GetInstanceListByModuleID(BOSE_SWITCHBOARD_DEVICE_GUID);

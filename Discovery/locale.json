@@ -1,15 +1,8 @@
 {
   "translations": {
     "de": {
-      "This instance determines the Bose switchboard devices present on the network.\nPlease refer to the documentation for further information.\n": "Diese Instanz sucht im Netzwerk nach vorhandenen Bose Switchboard Geräten.\nWeitere Informationen entnehmen Sie bitte der Dokumentation.\n",
-      "Instance ID:\t\t": "Instanz ID:\t\t",
-      "Module:\t\t\t": "Modul:\t\t\t",
-      "Date:\t\t\t": "Datum:\t\t\t",
-      "Time:\t\t\t": "Uhrzeit:\t\t\t",
-      "Developer:\t\t": "Entwickler:\t\t",
-      "Note": "Notiz",
+      "Please select a category": "Bitte wählen Sie eine Kategorie aus",
       "Category": "Kategorie",
-      "Bose Switchboard Devices": "Bose Switchboard Geräte",
       "IP Address": "IP Adresse",
       "Product Name": "Produkt Name",
       "Product Type": "Produkt Typ",

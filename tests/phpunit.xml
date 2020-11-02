@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit>
+    <php>
+        <const name="PHPUNIT_TESTSUITE" value="true"/>
+    </php>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../Configurator</directory>
+            <directory suffix=".php">../Device</directory>
+            <directory suffix=".php">../Discovery</directory>
+            <directory suffix=".php">../Splitter</directory>
+        </whitelist>
+    </filter>
+</phpunit>

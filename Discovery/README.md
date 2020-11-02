@@ -1,4 +1,4 @@
-# Bose Switchboard Discovery (beta)  
+# Bose Switchboard Discovery  
 
 ![Image](../imgs/bose_logo_blackbox_80x80.png)  
 
@@ -25,18 +25,17 @@ Der Nutzer stimmt den o.a. Bedingungen, sowie den Lizenzbedingungen ausdrücklic
 
 ### 2. Voraussetzungen
 
-- IP-Symcon ab Version 5.4
+- IP-Symcon ab Version 5.5
 
 ### 3. Software-Installation
 
 * Bei kommerzieller Nutzung (z.B. als Einrichter oder Integrator) wenden Sie sich bitte zunächst an den Autor.
-* Bei privater Nutzung wird das 'Bose Switchboard'-Modul über den Module Store installiert.
-* Alternativ über das Module Control folgende URL hinzufügen: `https://github.com/ubittner/SymconBoseSwitchboard.git`  
+* Bei privater Nutzung wird das 'Bose Switchboard'-Modul über den Module Store installiert.  
 
 ### 4. Einrichten der Instanzen in IP-Symcon
 
 Unter 'Instanz hinzufügen' kann das 'Bose Switchboard Discovery'-Modul mithilfe des Schnellfilters gefunden werden.  
-Weitere Informationen zum Hinzufügen von Instanzen in der [Dokumentation der Instanzen](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen)
+Weitere Informationen zum Hinzufügen von Instanzen in der [Dokumentation der Instanzen](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen).
 
 __Konfigurationsseite__:
 
@@ -50,7 +49,7 @@ Es werden keine Statusvariablen und Profile verwendet.
 
 ### 6. WebFront
 
-Die Konfigurator Instanz ist im WebFront nicht verfügbar. 
+Die Bose Switchboard Discovery Instanz ist im WebFront nicht verfügbar. 
 
 ### 7. PHP-Befehlsreferenz
 

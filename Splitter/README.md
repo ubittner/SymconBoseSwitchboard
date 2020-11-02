@@ -1,8 +1,8 @@
-# Bose Switchboard Splitter (beta)  
+# Bose Switchboard Splitter  
 
 ![Image](../imgs/bose_logo_blackbox_80x80.png)  
 
-Stellt eine Verbindung mit der Bose Switchboard Cloud API her.  
+Stellt die Verbindung mit der Bose Switchboard Cloud API her.  
 
 Für dieses Modul besteht kein Anspruch auf Fehlerfreiheit, Weiterentwicklung, sonstige Unterstützung oder Support.  
 Bevor das Modul installiert wird, sollte unbedingt ein Backup von IP-Symcon durchgeführt werden.  
@@ -21,11 +21,11 @@ Der Nutzer stimmt den o.a. Bedingungen, sowie den Lizenzbedingungen ausdrücklic
 
 ### 1. Funktionsumfang
 
-* Bose Switchboard Cloud API (0.9)
+* Bose Switchboard Cloud API (1.0)
 
 ### 2. Voraussetzungen
 
-- IP-Symcon ab Version 5.4
+- IP-Symcon ab Version 5.5
 - Gültige IP-Symcon Subskription
 - Bose Home Speaker 300
 - Bose Home Speaker 450
@@ -37,21 +37,20 @@ Der Nutzer stimmt den o.a. Bedingungen, sowie den Lizenzbedingungen ausdrücklic
 ### 3. Software-Installation
 
 * Bei kommerzieller Nutzung (z.B. als Einrichter oder Integrator) wenden Sie sich bitte zunächst an den Autor.
-* Bei privater Nutzung wird das 'Bose Switchboard'-Modul über den Module Store installiert.
-* Alternativ über das Module Control folgende URL hinzufügen: `https://github.com/ubittner/SymconBoseSwitchboard.git`  
+* Bei privater Nutzung wird das 'Bose Switchboard'-Modul über den Module Store installiert.  
 
 ### 4. Einrichten der Instanzen in IP-Symcon
 
 Unter 'Instanz hinzufügen' kann das 'Bose Switchboard Splitter'-Modul mithilfe des Schnellfilters gefunden werden.  
-Weitere Informationen zum Hinzufügen von Instanzen in der [Dokumentation der Instanzen](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen)
+Weitere Informationen zum Hinzufügen von Instanzen in der [Dokumentation der Instanzen](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen).
 
 __Konfigurationsseite__:
 
-Name     | Beschreibung
--------- | ------------------
-Notiz    | Notiz
-Timeout  | Timeout
-Token    | Token
+Name            | Beschreibung
+--------------- | -------------------------------------
+Aktiv           | Schaltet den Splitter in-, bzw. aktiv
+Registrieren    | Startet den Registrierungsprozess
+Timeout         | Netzwerk-Timeout  
 
 ### 5. Statusvariablen und Profile
  
@@ -70,111 +69,132 @@ wird in der Instanz-Konfiguration des Bose Gerätes aufgeführt.
 Beispiel: 4aa8fe15-d16c-23ba-e42b-86dc75a3ed09
 
 ````
-BSBS_ListProducts(integer $InstanzID);
+string BOSESB_ListProducts(integer $InstanzID);
 Listet die für den aktuellen Benutzer verfügbaren Bose Produkte auf.  
+Liefert als Rückgabewert einen json codierten String mit Informationen.  
 
 Beispiel:
-BSBS_ListProducts(12345);
+BOSESB_ListProducts(12345);
 ````  
 
 ````
-BSBS_GetProduct(integer $InstanzID, string $ProduktID);
+string BOSESB_GetProduct(integer $InstanzID, string $ProduktID);
 Ruft Informationen über ein einzelnes Bose Produkt ab.  
 Nur Produkte, die von ListProducts zurückgegeben werden, sind für den angegebenen Benutzer zugänglich.  
+Liefert als Rückgabewert einen json codierten String mit Informationen.  
 
 Beispiel:
-BSBS_GetProduct(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09');
+BOSESB_GetProduct(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09');
 ````  
 
 ````
-BSBS_ChangeMuteSetting(integer $InstanzID, string $ProduktID, string $Stummschaltung);  
+string BOSESB_ChangeMuteSetting(integer $InstanzID, string $ProduktID, string $Stummschaltung);  
 Sendet eine Aufforderung zur Änderung der Einstellung für die Stummschaltung des Lautsprechers.  
+Liefert als Rückgabewert einen json codierten String mit Informationen.  
 
 Werte für $Stummschaltung: "ON" "OFF" "TOGGLE"  
 
 Beispiel:
-BSBS_ChangeMuteSetting(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 'ON');
+BOSESB_ChangeMuteSetting(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 'ON');
 ````  
 
 ````
-BSBS_ChangePowerSetting(integer $InstanzID, string $ProduktID, string $Power);  
+string BOSESB_ChangePowerSetting(integer $InstanzID, string $ProduktID, string $Power);  
 Sendet eine Aufforderung zum Ein- / Ausschalten des Lautsprechers.  
+Liefert als Rückgabewert einen json codierten String mit Informationen.  
 
 Werte für $Power: "ON" "STANDBY" "TOGGLE"
 
 Beispiel:
-BSBS_ChangePowerSetting(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 'ON');
+BOSESB_ChangePowerSetting(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 'ON');
 ````  
 
 ````
-BSBS_ChangeVolume(integer $InstanzID, string $ProduktID, integer $Lautstärke);  
+string BOSESB_ChangeVolume(integer $InstanzID, string $ProduktID, integer $Lautstärke);  
 Sendet eine Aufforderung zur Änderung der Lautstärke des Lautsprechers.  
+Liefert als Rückgabewert einen json codierten String mit Informationen.  
 
 Werte für $Lautstärke: 0 bis 100
 
 Beispiel:
-BSBS_ChangeVolume(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 15);
+BOSESB_ChangeVolume(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 15);
 ````  
 
 ````
-BSBS_GetNowPlaying(integer $InstanzID, string $ProduktID);  
+string BOSESB_GetNowPlaying(integer $InstanzID, string $ProduktID);  
 Ruft die aktuellsten Informationen der Wiedergabe ab, die für dieses Produkt verfügbar sind.  
+Liefert als Rückgabewert einen json codierten String mit Informationen.  
 
 Beispiel:
-BSBS_GetNowPlaying(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09');
+BOSESB_GetNowPlaying(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09');
 ````  
 
 ````
-BSBS_ControlProduct(integer $InstanzID, string $ProduktID, string $Befehl);  
-Ändert den Wiedergabestatus eines Produkts.   
+string BOSESB_ControlProduct(integer $InstanzID, string $ProduktID, string $Befehl);  
+Ändert den Wiedergabestatus eines Produkts.  
+Liefert als Rückgabewert einen json codierten String mit Informationen.  
 
 Werte für $Befehl: "RESUME" "PAUSE" "RESUME_PAUSE_TOGGLE" "SKIP_NEXT" "SKIP_PREVIOUS"  
 
 Beispiel:
-BSBS_ControlProduct(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 'PAUSE');
+BOSESB_ControlProduct(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 'PAUSE');
 ````  
 
 ````
-BSBS_SetRepeat(integer $InstanzID, string $ProduktID, string $Wiederholung);  
-Setzt die aktuelle Inhaltsquelle auf Wiederholung (falls verfügbar).   
+string BOSESB_SetRepeat(integer $InstanzID, string $ProduktID, string $Wiederholung);  
+Setzt die aktuelle Inhaltsquelle auf Wiederholung (falls verfügbar).  
+Liefert als Rückgabewert einen json codierten String mit Informationen.  
 
 Werte für $Wiederholung: "ONE" "ALL" "OFF"  
 
 Beispiel:
-BSBS_SetRepeat(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 'ONE');
+BOSESB_SetRepeat(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 'ONE');
 ````  
 
 ````
-BSBS_SetShuffle(integer $InstanzID, string $ProduktID, string $Zufallswiedergabe);  
-Setzt die aktuelle Inhaltsquelle auf Zufallswiedergabe (falls verfügbar).     
+string BOSESB_SetShuffle(integer $InstanzID, string $ProduktID, string $Zufallswiedergabe);  
+Setzt die aktuelle Inhaltsquelle auf Zufallswiedergabe (falls verfügbar).  
+Liefert als Rückgabewert einen json codierten String mit Informationen.  
 
 Werte für $Zufallswiedergabe: "ON" "OFF" "TOGGLE"  
 
 Beispiel:
-BSBS_SetShuffle(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 'ON');
+BOSESB_SetShuffle(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 'ON');
 ````  
 
 ````
-BSBS_ListPresets(integer $InstanzID, string $ProduktID);  
-Listet die Voreinstellungen auf, die dem aktuellen Benutzer auf diesem Produkt zur Verfügung stehen.      
+BOSESB_ListPresets(integer $InstanzID, string $ProduktID);  
+Listet die Voreinstellungen auf, die diesem Produkt zur Verfügung stehen.  
+Liefert als Rückgabewert einen json codierten String mit Informationen.   
 
 Beispiel:
-BSBS_ListPresets(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09');
+BOSESB_ListPresets(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09');
 ````  
 
 ````
-BSBS_PlayPreset(integer $InstanzID, string $ProduktID, integer $Voreinstellung);  
-Spielt eine Voreinstellung (Preset 1-6) auf dem Produkt ab.      
+string BOSESB_GetPreset(integer $InstanzID, integer $PresetID);  
+Listet eine vorgegebene Voreinstellung auf.  
+Liefert als Rückgabewert einen String mit Informationen.
+
+Beispiel:
+BOSESB_ListPresets(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 1);
+````  
+
+````
+string BOSESB_PlayPreset(integer $InstanzID, string $ProduktID, integer $Voreinstellung);  
+Spielt eine Voreinstellung (Preset 1-6) auf dem Produkt ab.  
+Liefert als Rückgabewert einen json codierten String mit Informationen.  
 
 Werte für $Voreinstellung: 1 bis 6  
 
 Beispiel:
-BSBS_PlayPreset(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 1);
+BOSESB_PlayPreset(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 1);
 ````
   
 ````
-BSBS_PlayAudioNotification(integer $InstanzID, string $ProduktID, string $AudioUrl, integer $Lautstärke);  
-Spielt eine Audiobenachrichtigung ab.       
+string BOSESB_PlayAudioNotification(integer $InstanzID, string $ProduktID, string $AudioUrl, integer $Lautstärke);  
+Spielt eine Audiobenachrichtigung ab.  
+Liefert als Rückgabewert einen json codierten String mit Informationen.  
 
 Werte für $AudioUrl: 'https://example.com/notification.mp3'  
 Eine URL, die auf eine Audiodatei zeigt, die abgespielt wird.  
@@ -185,5 +205,5 @@ Der Lautstärkepegel, mit dem die Benachrichtigung abgespielt wird.
 Dieser Wert ist optional, wenn keine Lautstärke angegeben wird, wird die Benachrichtigung mit der gleichen Lautstärke wie der aktuelle Inhalt abgespielt.  
 
 Beispiel:
-BSBS_PlayAudioNotification(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 'https://example.com/notification.mp3' ,15);
+BOSESB_PlayAudioNotification(12345, '4aa8fe15-d16c-23ba-e42b-86dc75a3ed09', 'https://example.com/notification.mp3' ,15);
 ````

@@ -5,48 +5,8 @@
       "image": "data:image/png;base64,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"
     },
     {
-      "type": "ExpansionPanel",
-      "caption": "Bose Switchboard Discovery",
-      "items": [
-        {
-          "type": "Label",
-          "caption": "This instance determines the Bose switchboard devices present on the network.\nPlease refer to the documentation for further information.\n"
-        },
-        {
-          "type": "Label",
-          "caption": "Instance ID:"
-        },
-        {
-          "type": "Label",
-          "caption": "Module:"
-        },
-        {
-          "type": "Label",
-          "caption": "Version:"
-        },
-        {
-          "type": "Label",
-          "caption": "Date:"
-        },
-        {
-          "type": "Label",
-          "caption": "Time:"
-        },
-        {
-          "type": "Label",
-          "caption": "Developer:"
-        },
-        {
-          "type": "ValidationTextBox",
-          "name": "Note",
-          "caption": "Note",
-          "width": "600px"
-        }
-      ]
-    },
-    {
       "type": "Label",
-      "caption": " "
+      "caption": "Please select a category"
     },
     {
       "type": "SelectCategory",
@@ -59,7 +19,6 @@
     {
       "type": "Configurator",
       "name": "Devices",
-      "caption": "Bose Switchboard Devices",
       "delete": true,
       "sort": {
         "column": "IP",

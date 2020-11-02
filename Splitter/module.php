@@ -1,12 +1,11 @@
 <?php
 
 /** @noinspection PhpUnused */
-/** @noinspection DuplicatedCode */
 
 /*
  * @module      Bose Switchboard Splitter
  *
- * @prefix      BSBS
+ * @prefix      BOSESB
  *
  * @file        module.php
  *
@@ -15,7 +14,7 @@
  * @license     CC BY-NC-SA 4.0
  *              https://creativecommons.org/licenses/by-nc-sa/4.0/
  *
- * @see         https://github.com/ubittner/SymconBoseSwitchboard/Splitter
+ * @see         https://github.com/ubittner/SymconBoseSwitchboard/
  *
  * @guids       Library
  *              {7101C0B6-7A8D-1FE2-A427-8DDCA26C3244}
@@ -26,48 +25,45 @@
 
 declare(strict_types=1);
 
-// Include
-include_once __DIR__ . '/../libs/helper/autoload.php';
+include_once __DIR__ . '/../libs/constants.php';
 include_once __DIR__ . '/helper/autoload.php';
 
 class BoseSwitchboardSplitter extends IPSModule
 {
-    // Helper
-    use BSBS_switchboardAPI;
-    use BSBS_webHook;
-    use BSBS_webOAuth;
+    //Helper
+    use BOSESB_switchboardAPI;
+    use BOSESB_webHook;
+    use BOSESB_webOAuth;
 
     public function Create()
     {
-        // Never delete this line!
+        //Never delete this line!
         parent::Create();
-        // Properties
-        $this->RegisterPropertyString('Note', '');
-        $this->RegisterPropertyInteger('Timeout', 5000);
-        $this->RegisterPropertyString('Token', '');
+        //Register properties
+        $this->RegisterProperties();
     }
 
     public function Destroy()
     {
-        // Unregister WebHook
+        //Unregister WebHook
         if (!IPS_InstanceExists($this->InstanceID)) {
             $this->UnregisterWebhook('/hook/' . $this->oauthIdentifier);
         }
-        // Unregister WebOAuth
+        //Unregister WebOAuth
         if (!IPS_InstanceExists($this->InstanceID)) {
             $this->UnregisterWebOAuth($this->oauthIdentifier);
         }
-        // Never delete this line!
+        //Never delete this line!
         parent::Destroy();
     }
 
     public function ApplyChanges()
     {
-        // Wait until IP-Symcon is started
+        //Wait until IP-Symcon is started
         $this->RegisterMessage(0, IPS_KERNELSTARTED);
-        // Never delete this line!
+        //Never delete this line!
         parent::ApplyChanges();
-        // Check runlevel
+        //Check runlevel
         if (IPS_GetKernelRunlevel() != KR_READY) {
             return;
         }
@@ -78,12 +74,7 @@ class BoseSwitchboardSplitter extends IPSModule
 
     public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     {
-        $this->SendDebug(__FUNCTION__, $TimeStamp . ', SenderID: ' . $SenderID . ', Message: ' . $Message . ', Data: ' . print_r($Data, true), 0);
-        if (!empty($Data)) {
-            foreach ($Data as $key => $value) {
-                $this->SendDebug(__FUNCTION__, 'Data[' . $key . '] = ' . json_encode($value), 0);
-            }
-        }
+        $this->SendDebug('MessageSink', 'SenderID: ' . $SenderID . ', Message: ' . $Message, 0);
         switch ($Message) {
             case IPS_KERNELSTARTED:
                 $this->KernelReady();
@@ -95,21 +86,6 @@ class BoseSwitchboardSplitter extends IPSModule
     public function GetConfigurationForm()
     {
         $formData = json_decode(file_get_contents(__DIR__ . '/form.json'), true);
-        $moduleInfo = [];
-        $library = IPS_GetLibrary(BOSE_SWITCHBOARD_LIBRARY_GUID);
-        $module = IPS_GetModule(BOSE_SWITCHBOARD_SPLITTER_GUID);
-        $moduleInfo['name'] = $module['ModuleName'];
-        $moduleInfo['version'] = $library['Version'] . '-' . $library['Build'];
-        $moduleInfo['date'] = date('d.m.Y', $library['Date']);
-        $moduleInfo['time'] = date('H:i', $library['Date']);
-        $moduleInfo['developer'] = $library['Author'];
-        $formData['elements'][1]['items'][1]['caption'] = $this->Translate("Instance ID:\t\t") . $this->InstanceID;
-        $formData['elements'][1]['items'][2]['caption'] = $this->Translate("Module:\t\t\t") . $moduleInfo['name'];
-        $formData['elements'][1]['items'][3]['caption'] = "Version:\t\t\t" . $moduleInfo['version'];
-        $formData['elements'][1]['items'][4]['caption'] = $this->Translate("Date:\t\t\t") . $moduleInfo['date'];
-        $formData['elements'][1]['items'][5]['caption'] = $this->Translate("Time:\t\t\t") . $moduleInfo['time'];
-        $formData['elements'][1]['items'][6]['caption'] = $this->Translate("Developer:\t\t") . $moduleInfo['developer'];
-        $formData['elements'][1]['items'][7]['caption'] = "API Version:\t\t" . $this->apiVersion;
         return json_encode($formData);
     }
 
@@ -167,6 +143,11 @@ class BoseSwitchboardSplitter extends IPSModule
                 $response = $this->ListPresets($params['productID']);
                 break;
 
+            case 'GetPreset':
+                $params = (array) $data->Buffer->Params;
+                $response = $this->GetPreset($params['productID'], $params['presetID']);
+                break;
+
             case 'PlayPreset':
                 $params = (array) $data->Buffer->Params;
                 $response = $this->PlayPreset($params['productID'], $params['preset']);
@@ -185,21 +166,64 @@ class BoseSwitchboardSplitter extends IPSModule
         return $response;
     }
 
-    //#################### Private
+    public function LogTokens(): void
+    {
+        //Refresh token
+        $refreshToken = $this->ReadPropertyString('RefreshToken');
+        if (!empty($refreshToken)) {
+            $this->LogMessage('Refresh Token: ' . $refreshToken, KL_NOTIFY);
+        } else {
+            $this->LogMessage('No refresh token found!', KL_NOTIFY);
+        }
+        //Access token
+        $data = $this->GetBuffer('AccessToken');
+        if ($data != '') {
+            $data = json_decode($data);
+            if (time() < $data->Expires) {
+                $this->LogMessage('Access Token:  ' . $data->Token, KL_NOTIFY);
+                $this->LogMessage('Access Token Expires: ' . date('d.m.y H:i:s', $data->Expires), KL_NOTIFY);
+            }
+        } else {
+            $this->LogMessage('No access token found!', KL_NOTIFY);
+        }
+    }
 
-    private function KernelReady()
+    #################### Private
+
+    private function KernelReady(): void
     {
         $this->ApplyChanges();
     }
 
-    private function ValidateConfiguration()
+    private function RegisterProperties(): void
+    {
+        $this->RegisterPropertyBoolean('Active', false);
+        $this->RegisterPropertyInteger('Timeout', 5000);
+        $this->RegisterPropertyString('RefreshToken', '');
+    }
+
+    private function ValidateConfiguration(): void
     {
         $status = 102;
-        // Check token
-        $token = $this->ReadPropertyString('Token');
+        //Check refresh token
+        $token = $this->ReadPropertyString('RefreshToken');
         if (empty($token)) {
             $status = 201;
         }
+        //Check instance
+        $active = $this->CheckInstance();
+        if (!$active) {
+            $status = 104;
+        }
         $this->SetStatus($status);
+    }
+
+    private function CheckInstance(): bool
+    {
+        $result = $this->ReadPropertyBoolean('Active');
+        if (!$result) {
+            $this->SendDebug(__FUNCTION__, 'Instance is inactive!', 0);
+        }
+        return $result;
     }
 }

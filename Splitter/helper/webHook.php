@@ -4,27 +4,31 @@
 
 declare(strict_types=1);
 
-trait BSBS_webHook
+trait BOSESB_webHook
 {
+    #################### Protected
+
     /**
      * Used for the API Event Callback URL.
      */
-    protected function ProcessHookData()
+    protected function ProcessHookData(): void
     {
         $this->SendDebug(__FUNCTION__ . ' Incoming Data: ', print_r($_SERVER, true), 0);
-        // Get content
+        //Get content
         $data = file_get_contents('php://input');
         $this->SendDebug(__FUNCTION__ . ' Data: ', $data, 0);
-        // Send data to children
+        //Send data to children
         $forwardData = [];
         $forwardData['DataID'] = CORE_WEBHOOK_DATA_GUID;
         $forwardData['Buffer'] = json_decode($data);
         $forwardData = json_encode($forwardData);
         $this->SendDebug(__FUNCTION__ . ' Forward Data: ', $forwardData, 0);
-        // Prepared, but not used at the moment!
-        // $this->SendDataToChildren($forwardData);
+        //Prepared, but not used at the moment!
+        //$this->SendDataToChildren($forwardData);
         $this->SendDebug(__FUNCTION__ . ' SendDataToChildren is not used at the moment!', $forwardData, 0);
     }
+
+    #################### Private
 
     /**
      * Registers a WebHook for:
@@ -33,7 +37,7 @@ trait BSBS_webHook
      *
      * @param $WebHook
      */
-    private function RegisterWebHook($WebHook)
+    private function RegisterWebHook($WebHook): void
     {
         $ids = IPS_GetInstanceListByModuleID(CORE_WEBHOOK_GUID);
         if (count($ids) > 0) {
@@ -57,7 +61,12 @@ trait BSBS_webHook
         }
     }
 
-    private function UnregisterWebHook($WebHook)
+    /**
+     * Unregisters a WebHook.
+     *
+     * @param $WebHook
+     */
+    private function UnregisterWebHook($WebHook): void
     {
         $ids = IPS_GetInstanceListByModuleID(CORE_WEBHOOK_GUID);
         if (count($ids) > 0) {
