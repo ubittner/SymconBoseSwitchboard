@@ -144,6 +144,17 @@ BOSESB_PlayDevicePreset(12345, 1);
 ````  
 
 ````
+Audiobenachrichtigung:  
+
+bool BOSESB_PlayDeviceAudioNotification(string $AudioUrl, integer $Volume);  
+Spielt eine Audio URL ab.  
+Wurde der Befehl erfolgreich ausgeführt liefert er true zurück, andernfalls false.  
+
+Beispiel:
+BOSESB_PlayDeviceAudioNotification(12345, "http:192.168.1.2/audio.mp3", 15);
+````  
+
+````
 Aktualisierung:  
 
 void BOSESB_UpdateDeviceState(integer $InstanzID);  

@@ -65,19 +65,21 @@ class BoseSwitchboardSplitter extends IPSModule
     {
         //Wait until IP-Symcon is started
         $this->RegisterMessage(0, IPS_KERNELSTARTED);
+        //Never delete this line!
+        parent::ApplyChanges();
+        //Check runlevel
+        if (IPS_GetKernelRunlevel() != KR_READY) {
+            return;
+        }
         //Move RefreshToken from property to attribute
         $refreshToken = @$this->ReadPropertyString('RefreshToken');
         if (is_string($refreshToken)) {
             if (!empty($refreshToken)) {
                 $this->WriteAttributeString('RefreshToken', $refreshToken);
                 IPS_SetProperty($this->InstanceID, 'RefreshToken', '');
+                IPS_ApplyChanges($this->InstanceID);
+                return;
             }
-        }
-        //Never delete this line!
-        parent::ApplyChanges();
-        //Check runlevel
-        if (IPS_GetKernelRunlevel() != KR_READY) {
-            return;
         }
         $this->RegisterWebHook('/hook/' . $this->oauthIdentifier);
         $this->RegisterWebOAuth($this->oauthIdentifier);
