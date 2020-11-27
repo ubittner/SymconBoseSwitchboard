@@ -252,6 +252,43 @@ trait BOSESB_deviceControl
         return $success;
     }
 
+    public function PlayDeviceAudioNotification(string $AudioUrl, int $Volume): bool
+    {
+        $this->SendDebug(__FUNCTION__, 'Method executed (' . microtime(true) . ')', 0);
+        $success = false;
+        if (!$this->CheckParentSplitter()) {
+            return $success;
+        }
+        $productID = $this->GetProductID();
+        if (empty($productID)) {
+            return $success;
+        }
+        //Send data to switchboard splitter
+        $data = [];
+        $buffer = [];
+        $data['DataID'] = BOSE_SWITCHBOARD_SPLITTER_DATA_GUID;
+        $buffer['Command'] = 'PlayAudioNotification';
+        $buffer['Params'] = ['productID' => (string) $productID, 'audioUrl' => (string) $AudioUrl, 'volumeOverride' => (int) $Volume];
+        $data['Buffer'] = $buffer;
+        $data = json_encode($data);
+        $result = json_decode($this->SendDataToParent($data), true);
+        $this->SendDebug(__FUNCTION__, 'Result: ' . json_encode($result), 0);
+        if (!empty($result)) {
+            if (is_array($result)) {
+                if (array_key_exists('requestID', $result)) {
+                    $requestID = $result['requestID'];
+                    if (!empty($requestID)) {
+                        $success = true;
+                    }
+                }
+            }
+        }
+        if (!$success) {
+            $this->SendDebug(__FUNCTION__, 'Method failed!', 0);
+        }
+        return $success;
+    }
+
     /**
      * Updates the device state.
      */

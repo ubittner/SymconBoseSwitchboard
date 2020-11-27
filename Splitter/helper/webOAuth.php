@@ -41,8 +41,7 @@ trait BOSESB_webOAuth
             }
             $refreshToken = $this->FetchRefreshToken($_GET['code']);
             $this->SendDebug(__FUNCTION__, "OK! Let's save the Refresh Token permanently", 0);
-            IPS_SetProperty($this->InstanceID, 'RefreshToken', $refreshToken);
-            IPS_ApplyChanges($this->InstanceID);
+            $this->WriteAttributeString('RefreshToken', $refreshToken);
         } else {
             //Just print raw post data!
             echo file_get_contents('php://input');
@@ -174,7 +173,7 @@ trait BOSESB_webOAuth
                 'http' => [
                     'header'        => "Content-Type: application/x-www-form-urlencoded\r\n",
                     'method'        => 'POST',
-                    'content'       => http_build_query(['refresh_token' => $this->ReadPropertyString('RefreshToken')]),
+                    'content'       => http_build_query(['refresh_token' => $this->ReadAttributeString('RefreshToken')]),
                     'ignore_errors' => true
                 ]
             ];
@@ -196,8 +195,7 @@ trait BOSESB_webOAuth
             //Update Refresh Token if we received one! (This is optional)
             if (isset($data->refresh_token)) {
                 $this->SendDebug(__FUNCTION__, "NEW! Let's save the updated Refresh Token permanently.", 0);
-                IPS_SetProperty($this->InstanceID, 'RefreshToken', $data->refresh_token);
-                IPS_ApplyChanges($this->InstanceID);
+                $this->WriteAttributeString('RefreshToken', $data->refresh_token);
             }
         }
         $this->SendDebug(__FUNCTION__, 'CACHE! New Access Token is valid until ' . date('d.m.y H:i:s', $Expires), 0);

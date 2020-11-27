@@ -39,8 +39,12 @@ class BoseSwitchboardSplitter extends IPSModule
     {
         //Never delete this line!
         parent::Create();
-        //Register properties
-        $this->RegisterProperties();
+        $this->RegisterPropertyBoolean('Active', false);
+        $this->RegisterPropertyInteger('Timeout', 5000);
+        //Only used for moving an existing refresh token to the new attribute
+        $this->RegisterPropertyString('RefreshToken', '');
+        //New attribute
+        $this->RegisterAttributeString('RefreshToken', '');
     }
 
     public function Destroy()
@@ -61,6 +65,14 @@ class BoseSwitchboardSplitter extends IPSModule
     {
         //Wait until IP-Symcon is started
         $this->RegisterMessage(0, IPS_KERNELSTARTED);
+        //Move RefreshToken from property to attribute
+        $refreshToken = @$this->ReadPropertyString('RefreshToken');
+        if (is_string($refreshToken)) {
+            if (!empty($refreshToken)) {
+                $this->WriteAttributeString('RefreshToken', $refreshToken);
+                IPS_SetProperty($this->InstanceID, 'RefreshToken', '');
+            }
+        }
         //Never delete this line!
         parent::ApplyChanges();
         //Check runlevel
@@ -170,7 +182,7 @@ class BoseSwitchboardSplitter extends IPSModule
     {
         $this->SendDebug(__FUNCTION__, 'Method executed (' . microtime(true) . ')', 0);
         //Refresh token
-        $refreshToken = $this->ReadPropertyString('RefreshToken');
+        $refreshToken = $this->ReadAttributeString('RefreshToken');
         if (!empty($refreshToken)) {
             $this->LogMessage('Refresh Token: ' . $refreshToken, KL_NOTIFY);
         } else {
@@ -189,14 +201,14 @@ class BoseSwitchboardSplitter extends IPSModule
         }
     }
 
-    public function UpdateRefreshToken(string $NewRefreshToken): void
+    public function UpdateRefreshTokenManually(string $NewRefreshToken): void
     {
         $this->SendDebug(__FUNCTION__, 'Method executed (' . microtime(true) . ')', 0);
         if (empty($NewRefreshToken)) {
             echo $this->Translate('Please enter your Refresh Token!');
         } else {
-            IPS_SetProperty($this->InstanceID, 'RefreshToken', $NewRefreshToken);
-            IPS_ApplyChanges($this->InstanceID);
+            $this->WriteAttributeString('RefreshToken', $NewRefreshToken);
+            $this->ReloadForm();
         }
     }
 
@@ -207,18 +219,11 @@ class BoseSwitchboardSplitter extends IPSModule
         $this->ApplyChanges();
     }
 
-    private function RegisterProperties(): void
-    {
-        $this->RegisterPropertyBoolean('Active', false);
-        $this->RegisterPropertyInteger('Timeout', 5000);
-        $this->RegisterPropertyString('RefreshToken', '');
-    }
-
     private function ValidateConfiguration(): void
     {
         $status = 102;
         //Check refresh token
-        $token = $this->ReadPropertyString('RefreshToken');
+        $token = $this->ReadAttributeString('RefreshToken');
         if (empty($token)) {
             $status = 201;
         }

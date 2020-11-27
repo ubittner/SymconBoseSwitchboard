@@ -37,7 +37,7 @@
         {
           "type": "Button",
           "caption": "Update Refresh Token",
-          "onClick": "echo BOSESB_UpdateRefreshToken($id, $NewRefreshToken);"
+          "onClick": "echo BOSESB_UpdateRefreshTokenManually($id, $NewRefreshToken);"
         },
         {
           "type": "Label",

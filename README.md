@@ -4,8 +4,8 @@
 
 [![IP-Symcon is awesome!](https://img.shields.io/badge/IP--Symcon-5.5-blue.svg)](https://www.symcon.de)
 [![Module Version](https://img.shields.io/badge/Module_Version-1.00-blue.svg)]()
-[![Module Build](https://img.shields.io/badge/Module_Build-13-blue.svg)]()
-[![Module Date](https://img.shields.io/badge/Module_Date-20201102-blue.svg)]()
+[![Module Build](https://img.shields.io/badge/Module_Build-14-blue.svg)]()
+[![Module Date](https://img.shields.io/badge/Module_Date-20201127-blue.svg)]()
 [![Switchboard API](https://img.shields.io/badge/Switchboard_API-1.0-blue.svg)]()  
 [![Check Style](https://github.com/ubittner/SymconBoseSwitchboard/workflows/Check%20Style/badge.svg)](https://github.com/ubittner/SymconBoseSwitchboard/actions)
 [![Run Tests](https://github.com/ubittner/SymconBoseSwitchboard/workflows/Run%20Tests/badge.svg)](https://github.com/ubittner/SymconBoseSwitchboard/actions)  
